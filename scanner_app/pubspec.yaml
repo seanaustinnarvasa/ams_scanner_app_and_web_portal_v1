@@ -1,0 +1,72 @@
+name: nustar_turnstile_scanner
+description: Nustar Turnstile Scanner App
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  responsive_sizer: ^3.0.8
+  font_awesome_flutter: ^10.1.0
+  fluttertoast: ^8.1.1
+  overlay_loading_progress: 1.0.1
+  url_launcher: 6.1.10
+  device_info_plus: ^3.2.3
+  http:
+  blue_thermal_printer: 1.2.2
+  intl: ^0.18.1
+  shared_preferences: ^2.2.0
+  path_provider: ^2.0.15
+  quickalert: ^1.0.1
+  telpo_flutter_sdk: #^0.1.1
+  openpgp: ^3.0.1
+  flutter_network_connectivity: ^0.0.6
+  app_settings: ^5.1.1
+  # firebase_crashlytics: ^3.4.5
+  firebase_core: ^2.22.0
+  cloud_firestore: ^4.13.0
+  qr_code_scanner: ^1.0.1
+  firebase_auth: ^4.13.0
+  ntp: ^2.0.0
+  uuid:
+  firebase_remote_config: #5.4.2 #^4.4.7
+  # user_inactivity_detector: ^1.0.4
+  idle_detector_wrapper: ^1.2.1
+  restart_app: ^1.2.1
+  provider: ^6.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/app/
+
+  fonts:
+    - family: MontserratBlack
+      fonts:
+        - asset: assets/fonts/Montserrat-Black.ttf
+    - family: MontserratMedium
+      fonts:
+        - asset: assets/fonts/Montserrat-Medium.ttf
+    - family: MontserratRegular
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+    - family: MontserratItalic
+      fonts:
+        - asset: assets/fonts/Montserrat-Italic.ttf
+    - family: MontserratSemiBold
+      fonts:
+        - asset: assets/fonts/Montserrat-SemiBold.ttf

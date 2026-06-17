@@ -1,0 +1,10 @@
+{
+  "git.ignoreLimitWarning": true,
+  "dart.flutterSdkPath": ".fvm/versions/3.10.1",
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309340078448",
+    "project_id": "ams-scanner-app",
+    "storage_bucket": "ams-scanner-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309340078448:android:477007af821b1a32ac8fb5",
+        "android_client_info": {
+          "package_name": "ams.scanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyEtZbu2GqI9sDnopB4OGZde4lGg74Jlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

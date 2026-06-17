@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "97475177442",
+    "project_id": "nustar-resort-app-92c7c",
+    "storage_bucket": "nustar-resort-app-92c7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97475177442:android:0469f8d4a1da05d14367bb",
+        "android_client_info": {
+          "package_name": "uhri.nustar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97475177442-aq1i596nc0lfl2l1ogg9a11ofsqg5srj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uhri.nustar",
+            "certificate_hash": "2742238d85a03141cce3ba1bacc90949667fd3ea"
+          }
+        },
+        {
+          "client_id": "97475177442-glub4oghlchtd65ms5fo5b8stb3qo0pr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwen7sPRqPuBIckLBg2S-uYBZ7eVlajyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97475177442-glub4oghlchtd65ms5fo5b8stb3qo0pr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "97475177442-g1un271502pnm7efon70nltag4io6msc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.uhri.nustar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

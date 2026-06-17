@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nustar Resort</string>
+    <string name="package_name">com.example.main</string>
+    <string name="facebook_app_id">794853535422535</string>
+    <string name="fb_login_protocol_scheme">fb794853535422535</string>
+    <string name="facebook_client_token">214363fed73a78590a3ae319e525e761</string>
+    <string name="flutter_sp">FlutterSharedPreferences</string>
+    <string name="mag_stripe_value">flutter.magstripe</string>
+    <string name="mag_stripe_card_reader_res">CardReader value: </string>
+    <string name="notification_message">NUSTAR Merchant application is running</string>
+    <string name="foreground_service_message">Foreground Service is running...</string>
+    <string name="membership_card">mag_stripe_membership_card</string>
+    <string name="mag_stripe_swipe_card">MAG_STRIPE_SWIPE_CARD</string>
+    <string name="mag_stripe_clear_data">MAG_STRIPE_CLEAR_DATA</string>
+    <string name="merchant_mag_stripe_clear_data">MERCHANT_MAG_STRIPE_CLEAR_DATA</string>
+    <string name="merchant_stripe_swipe_card">MERCHANT_MAG_STRIPE_SWIPE_CARD</string>
+</resources>

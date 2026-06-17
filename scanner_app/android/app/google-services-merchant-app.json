@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878211255711",
+    "project_id": "nustar-merchant-app",
+    "storage_bucket": "nustar-merchant-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878211255711:android:7e6e1a138916d0db1a41aa",
+        "android_client_info": {
+          "package_name": "uhri.nustar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkw0npHbGv9scjns35BJYH35JFR4AMCFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

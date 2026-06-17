@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "373673897525",
+    "project_id": "nustar-resort-app-uat",
+    "storage_bucket": "nustar-resort-app-uat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373673897525:android:9be767cb451d6d1339cb7c",
+        "android_client_info": {
+          "package_name": "uhri.nustar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBV5lfSYdj5JNXgD5V-sNqtgv9SYI8vQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

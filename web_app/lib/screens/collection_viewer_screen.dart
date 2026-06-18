@@ -1,261 +1,92 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../models/assets_model.dart';
+import '../providers/theme_provider.dart';
 
 class CollectionViewer extends StatelessWidget {
   const CollectionViewer({super.key});
 
-  Future<void> _showAddDialog(BuildContext context) async {
-    final nameController = TextEditingController();
-    final typeController = TextEditingController(text: 'entry');
-    final memberController = TextEditingController(text: 'Walk-in');
-    final photoController = TextEditingController();
-
-    await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Add Event'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: typeController,
-                decoration: const InputDecoration(labelText: 'Event Type'),
-              ),
-              TextField(
-                controller: memberController,
-                decoration: const InputDecoration(labelText: 'Member Type'),
-              ),
-              TextField(
-                controller: photoController,
-                decoration: const InputDecoration(labelText: 'Photo URL'),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              if (nameController.text.trim().isEmpty) return;
-              await FirebaseFirestore.instance.collection('assets').add({
-                'name': nameController.text.trim(),
-                'event_type': typeController.text.trim().isEmpty
-                    ? 'entry'
-                    : typeController.text.trim(),
-                'member_type': memberController.text.trim().isEmpty
-                    ? 'Guest'
-                    : memberController.text.trim(),
-                'photo_url': photoController.text.trim().isEmpty
-                    ? null
-                    : photoController.text.trim(),
-                'timestamp': FieldValue.serverTimestamp(),
-              });
-              if (ctx.mounted) Navigator.pop(ctx);
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-
-    nameController.dispose();
-    typeController.dispose();
-    memberController.dispose();
-    photoController.dispose();
-  }
-
-  Future<void> _deleteDoc(BuildContext context, String docId) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Delete document?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true && context.mounted) {
-      await FirebaseFirestore.instance.collection('assets').doc(docId).delete();
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Deleted $docId'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _editDoc(BuildContext context, Assets event) async {
-    final nameController = TextEditingController(text: event.name);
-    final typeController = TextEditingController(text: event.eventType);
-    final memberController = TextEditingController(text: event.memberType);
-    final photoController = TextEditingController(text: event.photoUrl ?? '');
-
-    await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Edit Event'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: typeController,
-                decoration: const InputDecoration(labelText: 'Event Type'),
-              ),
-              TextField(
-                controller: memberController,
-                decoration: const InputDecoration(labelText: 'Member Type'),
-              ),
-              TextField(
-                controller: photoController,
-                decoration: const InputDecoration(labelText: 'Photo URL'),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              if (nameController.text.trim().isEmpty) return;
-              await FirebaseFirestore.instance
-                  .collection('assets')
-                  .doc(event.id)
-                  .update({
-                'name': nameController.text.trim(),
-                'event_type': typeController.text.trim(),
-                'member_type': memberController.text.trim(),
-                'photo_url': photoController.text.trim().isEmpty
-                    ? null
-                    : photoController.text.trim(),
-              });
-              if (ctx.mounted) Navigator.pop(ctx);
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-
-    nameController.dispose();
-    typeController.dispose();
-    memberController.dispose();
-    photoController.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final stream = FirestoreService().getEventsRealtime();
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isCompactHeader = screenWidth < 640;
 
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        elevation: 2,
-        margin: EdgeInsets.zero,
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: EdgeInsets.all(isCompactHeader ? 12 : 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Row(
-              //   children: [
-              //     if (!isCompactHeader) ...[
-              //       const Icon(Icons.history_rounded, size: 28),
-              //       const SizedBox(width: 12),
-              //     ],
-              //     Expanded(
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           Text(
-              //             'Live Events Stream',
-              //             style: Theme.of(context).textTheme.titleLarge,
-              //           ),
-              //           Text(
-              //             'Updates automatically from Firestore without page refresh',
-              //             style:
-              //                 Theme.of(context).textTheme.bodyMedium?.copyWith(
-              //                       color: Theme.of(context)
-              //                           .colorScheme
-              //                           .onSurfaceVariant,
-              //                     ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //     // if (!isCompactHeader)
-              //     //   FilledButton.icon(
-              //     //     onPressed: () => _showAddDialog(context),
-              //     //     icon: const Icon(Icons.add),
-              //     //     label: const Text('Add'),
-              //     //   ),
-              //   ],
-              // ),
-              // if (isCompactHeader) ...[
-              //   const SizedBox(height: 12),
-              //   FilledButton.icon(
-              //     onPressed: () => _showAddDialog(context),
-              //     icon: const Icon(Icons.add),
-              //     label: const Text('Add Event'),
-              //   ),
-              // ],
-              // const SizedBox(height: 16),
-              _RealtimeTable(
-                stream: stream,
-                // onDelete: _deleteDoc,
-                // onEdit: _editDoc,
-              ),
-            ],
-          ),
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _CollectionHeader(),
+            const SizedBox(height: 16),
+            _RealtimeTable(
+              stream: stream,
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
+class _CollectionHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDark;
+
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isDark
+                ? const Color(0xFF390b16).withValues(alpha: 0.2)
+                : const Color(0xFFe7bd9c).withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            Icons.history_rounded,
+            size: 24,
+            color: isDark
+                ? const Color(0xFFe7bd9c)
+                : const Color(0xFF390b16),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Live Assets Stream',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Text(
+                'Updates automatically from Firestore',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _RealtimeTable extends StatefulWidget {
   final Stream<List<Assets>> stream;
-  // final Future<void> Function(BuildContext, String) onDelete;
-  // final Future<void> Function(BuildContext, Assets) onEdit;
 
   const _RealtimeTable({
     required this.stream,
-    // required this.onDelete,
-    // required this.onEdit,
   });
 
   @override
@@ -264,7 +95,7 @@ class _RealtimeTable extends StatefulWidget {
 
 class _RealtimeTableState extends State<_RealtimeTable> {
   final _firestoreService = FirestoreService();
-  final List<int> _rowsPerPageOptions = const [10, 25, 50, 100];
+  static const List<int> _rowsPerPageOptions = [10, 25, 50, 100];
 
   int _rowsPerPage = 10;
   int _page = 0;
@@ -286,7 +117,6 @@ class _RealtimeTableState extends State<_RealtimeTable> {
     DataColumn(label: Text('ASSET TAG ID')),
     DataColumn(label: Text('ASSET TAG NAME')),
     DataColumn(label: Text('ASSIGNEE NAME')),
-    // DataColumn(label: Text('Actions')),
   ];
 
   @override
@@ -529,21 +359,8 @@ class _RealtimeTableState extends State<_RealtimeTable> {
       DataCell(Text(assets.assetDepartment)),
       DataCell(Text(assets.assetStatus)),
       DataCell(Text(
-        // assets.timestamp
         DateFormat("yyyy-MM-dd hh:mm:ss").format(assets.timestamp.toDate())
-      )),//assetDateCreated)),
-      // DataCell(
-      //   event.photoUrl == null || event.photoUrl!.isEmpty
-      //       ? const Text('No photo')
-      //       : SizedBox(
-      //           width: 220,
-      //           child: Text(
-      //             event.photoUrl!,
-      //             overflow: TextOverflow.ellipsis,
-      //           ),
-      //         ),
-      // ),
-      // DataCell(_actionRow(context, event)),
+      )),
     ];
   }
 
@@ -556,70 +373,6 @@ class _RealtimeTableState extends State<_RealtimeTable> {
       DataCell(Text(assets.assetTagId)),
       DataCell(Text(assets.assetTagName)),
       DataCell(Text(assets.assetAssignee)),
-      // DataCell(Text(time)),
-      // DataCell(Text(event.eventType)),
-      // DataCell(_mobileDetails(context, event)),
-      // DataCell(_actionRow(context, event)),
     ];
   }
-
-  Widget _mobileDetails(BuildContext context, Assets event) {
-    final theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          event.name,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          'Member: ${event.memberType}',
-          style: theme.textTheme.bodySmall,
-        ),
-        if (event.photoUrl != null && event.photoUrl!.isNotEmpty) ...[
-          const SizedBox(height: 2),
-          Text(
-            'Photo: ${event.photoUrl}',
-            style: theme.textTheme.bodySmall,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-        ],
-      ],
-    );
-  }
-
-  // Widget _actionRow(BuildContext context, Assets event) {
-  //   return Row(
-  //     mainAxisSize: MainAxisSize.min,
-  //     children: [
-  //       IconButton(
-  //         padding: EdgeInsets.zero,
-  //         constraints: const BoxConstraints(
-  //           minWidth: 36,
-  //           minHeight: 36,
-  //         ),
-  //         icon: const Icon(Icons.edit, size: 18),
-  //         onPressed: () => widget.onEdit(context, event),
-  //         tooltip: 'Edit',
-  //       ),
-  //       IconButton(
-  //         padding: EdgeInsets.zero,
-  //         constraints: const BoxConstraints(
-  //           minWidth: 36,
-  //           minHeight: 36,
-  //         ),
-  //         icon: const Icon(Icons.delete, size: 18, color: Colors.red),
-  //         onPressed: () => widget.onDelete(context, event.id),
-  //         tooltip: 'Delete',
-  //       ),
-  //     ],
-  //   );
-  // }
-  
 }

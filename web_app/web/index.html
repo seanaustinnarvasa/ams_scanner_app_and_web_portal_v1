@@ -3,23 +3,21 @@
 <head>
   <base href="$FLUTTER_BASE_HREF">
 
-  <title>web_app_system</title>
+  <title>Asset Movement Log</title>
   <link rel="manifest" href="manifest.json">
 
   <meta charset="UTF-8" />
   <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-  <meta name="description" content="NUSTAR AMS SCANNER LOGS" />
+  <meta name="description" content="NUSTAR Asset Management System - Real-time asset monitoring and scanner logs" />
   <meta name="app-version" content="__APP_VERSION__" />
 
-  <!-- ✅ Prevent page from zooming / scaling on mobile -->
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!-- Mobile responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta name="apple-mobile-web-app-title" content="src" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="NUSTAR" />
   <link
     rel="apple-touch-icon"
     sizes="180x180"
@@ -29,12 +27,12 @@
   <link
     rel="icon"
     type="image/png"
-    href="icons/android-chrome-512x512"
+    href="icons/android-chrome-512x512.png"
     sizes="512x512" />
   <link
     rel="icon"
     type="image/png"
-    href="icons/android-chrome-192x192"
+    href="icons/android-chrome-192x192.png"
     sizes="192x192" />
 
   <!-- Favicon -->
@@ -50,23 +48,14 @@
     href="icons/favicon-16x16.png" />
     
   <link rel="shortcut icon" href="icons/favicon.ico" />
-  <!-- <link rel="manifest" href="icons/site.webmanifest" /> -->
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <script src="flutter_bootstrap.js" async></script>
   <script>
     window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
+      _flutter.loader.load({
         onEntrypointLoaded: function(engineInitializer) {
           engineInitializer.initializeEngine().then(function(appRunner) {
             appRunner.runApp();

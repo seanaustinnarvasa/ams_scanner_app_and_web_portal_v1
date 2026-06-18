@@ -6,11 +6,11 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: Text('NUSTAR Asset Scanner'),
+          body: Text('Asset Movement Log'),
         ),
       ),
     );
 
-    expect(find.text('NUSTAR Asset Scanner'), findsOneWidget);
+    expect(find.text('Asset Movement Log'), findsOneWidget);
   });
 }

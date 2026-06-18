@@ -154,9 +154,14 @@ Widget _buildUserMenu(BuildContext context) {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             Text(
-              user?.email ?? '',
+              authProvider.userProfile?.email ?? '',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            if (authProvider.userProfile?.role != null)
+              Text(
+                'Role: ${authProvider.userProfile!.role}',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
           ],
         ),
       ),

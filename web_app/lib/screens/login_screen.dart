@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nustar_asset_scanner_app/models/user_model.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,17 +31,32 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = context.read<AuthProvider>();
-    if (_isLogin) {
-      await authProvider.signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
-    } else {
-      await authProvider.registerWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
-    }
+
+    /* /// ---  CREATE ACCOUNT --- ///
+    await authProvider.registerWithEmail(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      userRole: UserRole.admin.rawValue
+    );
+    */
+
+    await authProvider.signInWithEmail(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+    
+    // if (_isLogin) {
+    //   await authProvider.signInWithEmail(
+    //     _emailController.text.trim(),
+    //     _passwordController.text,
+    //   );
+    // } else {
+    //   await authProvider.registerWithEmail(
+    //     email: _emailController.text.trim(),
+    //     password: _passwordController.text,
+    //     userRole: 'Admin'
+    //   );
+    // }
   }
 
   @override
@@ -164,9 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          _isLogin ? 'Please sign in.' : 'Create your account',
+          _isLogin ? 'Please sign in your account to continue.' : 'Create your account',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Color(0xFF),
+            color: Colors.white
           ),
           textAlign: TextAlign.center,
         ),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nustar_asset_scanner_app/models/user_model.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
-
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,6 +29,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final authProvider = context.read<AuthProvider>();
 
+    await authProvider.signInWithEmail(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+
     /* /// ---  CREATE ACCOUNT --- ///
     await authProvider.registerWithEmail(
       email: _emailController.text.trim(),
@@ -39,11 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
       userRole: UserRole.admin.rawValue
     );
     */
-
-    await authProvider.signInWithEmail(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
     
     // if (_isLogin) {
     //   await authProvider.signInWithEmail(
@@ -172,7 +169,13 @@ class _LoginScreenState extends State<LoginScreen> {
         //     color: Colors.white,
         //   ),
         // ),
-        // const SizedBox(height: 16),
+        Image.asset(
+          'assets/img/nustar-cebu-logo-white.png',
+          width: 150,
+          height: 150,
+          fit: BoxFit.contain
+        ),
+        const SizedBox(height: 8),
         Text(
           'Asset Movement Log',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -280,14 +283,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildToggleButton() {
-    return TextButton(
-      onPressed: () => setState(() => _isLogin = !_isLogin),
-      child: Text(
-        _isLogin
-            ? "Don't have an account? Sign Up"
-            : 'Already have an account? Sign In',
-      ),
-    );
-  }
+  // Widget _buildToggleButton() {
+  //   return TextButton(
+  //     onPressed: () => setState(() => _isLogin = !_isLogin),
+  //     child: Text(
+  //       _isLogin
+  //           ? "Don't have an account? Sign Up"
+  //           : 'Already have an account? Sign In',
+  //     ),
+  //   );
+  // }
+
 }

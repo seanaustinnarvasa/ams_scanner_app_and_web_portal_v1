@@ -12,7 +12,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Asset Movement Log'),
+        // title: const Text('Asset Movement Log'),
         actions: [
           const ThemeToggle(),
           _buildUserMenu(context),
@@ -40,25 +40,36 @@ class DashboardScreen extends StatelessWidget {
   Widget _buildHeader(BuildContext context, bool isCompact) {
     final isDark = context.watch<ThemeProvider>().isDark;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.all(isCompact ? 16 : 20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isDark
-                  ? [const Color(0xFF390b16), const Color(0xFF5a1a24)]
-                  : [const Color(0xFFe7bd9c), const Color(0xFFd4a87a)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: isCompact ? _buildCompactHeader(context) : _buildDesktopHeader(context),
-        ),
-      ],
+    return Center(
+      child: Image.asset(
+        isDark ? 
+        'assets/img/nustar-cebu-logo-white.png' :
+        'assets/img/nustar-cebu-logo-burgundy.png',
+        width: 200,
+        height: 200,
+        fit: BoxFit.contain
+      ),
     );
+
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Container(
+    //       padding: EdgeInsets.all(isCompact ? 16 : 20),
+    //       decoration: BoxDecoration(
+    //         gradient: LinearGradient(
+    //           colors: isDark
+    //               ? [const Color(0xFF390b16), const Color(0xFF5a1a24)]
+    //               : [const Color(0xFFe7bd9c), const Color(0xFFd4a87a)],
+    //           begin: Alignment.topLeft,
+    //           end: Alignment.bottomRight,
+    //         ),
+    //         borderRadius: BorderRadius.circular(20),
+    //       ),
+    //       child: isCompact ? _buildCompactHeader(context) : _buildDesktopHeader(context),
+    //     ),
+    //   ],
+    // );
   }
 
   Widget _buildCompactHeader(BuildContext context) {
@@ -157,11 +168,11 @@ Widget _buildUserMenu(BuildContext context) {
               authProvider.userProfile?.email ?? '',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            if (authProvider.userProfile?.role != null)
-              Text(
-                'Role: ${authProvider.userProfile!.role}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+            // if (authProvider.userProfile?.role != null)
+            //   Text(
+            //     'Role: ${authProvider.userProfile!.role}',
+            //     style: Theme.of(context).textTheme.bodySmall,
+            //   ),
           ],
         ),
       ),

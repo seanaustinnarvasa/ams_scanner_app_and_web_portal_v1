@@ -43,18 +43,12 @@ class _CollectionHeader extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: isDark
-                ? const Color(0xFF390b16).withValues(alpha: 0.2)
-                : const Color(0xFFe7bd9c).withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(8),
-          ),
           child: Icon(
-            Icons.history_rounded,
-            size: 24,
+            Icons.devices,
+            size: 32,
             color: isDark
-                ? const Color(0xFFe7bd9c)
-                : const Color(0xFF390b16),
+                ? Colors.white
+                : Colors.black
           ),
         ),
         const SizedBox(width: 12),
@@ -63,16 +57,18 @@ class _CollectionHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Live Assets Stream',
+                'Asset Movement Log',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26
+                ),
               ),
               Text(
-                'Updates automatically from Firestore',
+                'Real-time data monitoring',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 17
+                ),
               ),
             ],
           ),

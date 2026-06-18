@@ -74,7 +74,7 @@ class AuthProvider extends ChangeNotifier {
   Future<void> registerWithEmail({
     required String email,
     required String password,
-    required String userRole
+    String userRole = 'user',
   }) async {
     _isLoading = true;
     _errorMessage = null;

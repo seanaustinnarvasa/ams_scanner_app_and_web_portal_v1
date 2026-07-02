@@ -57,10 +57,10 @@ android {
 
     defaultConfig {
         applicationId "ams.scanner"
-        minSdkVersion 20
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 32320215
-        versionName "v2.6.15"
+        versionCode 361900009
+        versionName "v3.6.29"
         multiDexEnabled true
     }
 

@@ -6,6 +6,28 @@ import 'package:provider/provider.dart';
 import '../models/assets_model.dart';
 import '../providers/theme_provider.dart';
 
+enum FilterOption { allRecords, currentlyOut }
+
+List<Assets> getCurrentlyOutAssets(List<Assets> events) {
+  if (events.isEmpty) return const [];
+
+  final latestByAsset = <String, Assets>{};
+  for (final event in events) {
+    final current = latestByAsset[event.assetTagId];
+    if (current == null || event.timestamp.compareTo(current.timestamp) > 0) {
+      latestByAsset[event.assetTagId] = event;
+    }
+  }
+
+  final outAssets = latestByAsset.values.where((asset) {
+    final type = asset.eventType.trim().toLowerCase();
+    return type == 'out' || type.contains('exit') || type.contains('checkout');
+  }).toList();
+
+  outAssets.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+  return outAssets;
+}
+
 class CollectionViewer extends StatelessWidget {
   const CollectionViewer({super.key});
 
@@ -99,6 +121,7 @@ class _RealtimeTableState extends State<_RealtimeTable> {
   int _lastEventCount = -1;
   bool _isLoadingTotal = true;
   String? _totalError;
+  FilterOption _selectedFilter = FilterOption.allRecords;
 
   static const List<DataColumn> _desktopColumns = [
     DataColumn(label: Text('ASSET TAG ID')),
@@ -170,9 +193,17 @@ class _RealtimeTableState extends State<_RealtimeTable> {
     });
   }
 
+  void _onFilterChanged(FilterOption option) {
+    setState(() {
+      _selectedFilter = option;
+      _page = 0;
+    });
+  }
+
   String _totalLabel() {
     if (_isLoadingTotal) return 'Loading total records...';
     if (_totalError != null) return 'Total records unavailable';
+    if (_selectedFilter == FilterOption.currentlyOut) return 'Currently out assets';
     return '$_totalRecords total records';
   }
 
@@ -185,6 +216,34 @@ class _RealtimeTableState extends State<_RealtimeTable> {
     final start = _safePage * _rowsPerPage + 1;
     final end = min(start + visibleCount - 1, effectiveTotalRecords);
     return '$start-$end of $effectiveTotalRecords';
+  }
+
+  Widget _buildFilterChips() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Wrap(
+        spacing: 10,
+        children: FilterOption.values.map((option) {
+          final isSelected = _selectedFilter == option;
+          final label = option == FilterOption.allRecords
+              ? 'ALL RECORDS'
+              : 'CURRENTLY OUT';
+
+          return FilterChip(
+            label: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+            selected: isSelected,
+            onSelected: (_) => _onFilterChanged(option),
+            checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+          );
+        }).toList(),
+      ),
+    );
   }
 
   @override
@@ -219,20 +278,29 @@ class _RealtimeTableState extends State<_RealtimeTable> {
           });
         }
 
-        if (events.isEmpty) {
-          return const Center(
+        final displayEvents = _selectedFilter == FilterOption.currentlyOut
+            ? getCurrentlyOutAssets(events)
+            : events;
+
+        final effectiveTotalRecords = _selectedFilter == FilterOption.currentlyOut
+            ? displayEvents.length
+            : (_isLoadingTotal || _totalError != null ? events.length : _totalRecords);
+
+        if (displayEvents.isEmpty) {
+          return Center(
             child: Padding(
-              padding: EdgeInsets.all(32),
-              child: Text('No assets found.'),
+              padding: const EdgeInsets.all(32),
+              child: Text(
+                _selectedFilter == FilterOption.currentlyOut
+                    ? 'No devices are currently out.'
+                    : 'No assets found.',
+              ),
             ),
           );
         }
 
-        final effectiveTotalRecords = _isLoadingTotal || _totalError != null
-            ? events.length
-            : _totalRecords;
         final pagedEvents =
-            events.skip(_safePage * _rowsPerPage).take(_rowsPerPage).toList();
+            displayEvents.skip(_safePage * _rowsPerPage).take(_rowsPerPage).toList();
 
         return LayoutBuilder(
           builder: (layoutContext, constraints) {
@@ -245,6 +313,8 @@ class _RealtimeTableState extends State<_RealtimeTable> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                _buildFilterChips(),
+                const SizedBox(height: 16),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
